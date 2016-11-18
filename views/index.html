@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+	<div id="content-layout" class="mdl-grid">
+		<div id="map-wrapper">
+			<div id="map"></div>
+		    <script>
+		      var map;
+		      function initMap() {
+		        map = new google.maps.Map(document.getElementById('map'), {
+		          center: {lat: -34.397, lng: 150.644},
+		          zoom: 8
+		        });
+		      }
+		    </script>
+		    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZC08lgoreqNUIikkN_tKMLO5FT-HkVeQ&callback=initMap"
+    async defer></script>
+			
+		</div>
+
+	  	<div id="panel-wrapper">
+	  		<div>
+	  			Lists of trips
+	  		</div>
+	  		<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+  				Plan new trip
+			</button>
+
+
+			<div>
+				Select Hotel
+			</div>
+			<div>
+				Select Restaurant
+			</div>
+			<div>
+				Select Activity
+			</div>		  		
+	  	</div>
+	  	
+
+  		<div class="float-btn float-top-center">
+  			<button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect">
+			  	<i class="material-icons">add</i>
+			</button>	
+  		</div>
+		
+	  	
+	</div>
+{% endblock %}
