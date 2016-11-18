@@ -21,29 +21,42 @@
 
 	  	<div id="panel-wrapper">
 	  		<div>
-	  			Lists of trips
+	  			{% for trip in trips %}
+	  				<div>
+	  				<span><a href="/{{trip.id}}">{{trip.name}}</a></span>
+	  				</div>
+	  			{% endfor %}
 	  		</div>
-	  		<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
-  				Plan new trip
-			</button>
+
+			<form action="/add" method="POST">
+				<label>Trip name</label>
+		        <input type="text" name="name">
+		        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" type="submit">
+	  				Plan new trip
+				</button>  		
+		    </form>
+	  		
+
+	  		<div>
+	  			{% for plan in plans %}
+	  				<div>
+		  				<button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" onclick="window.location.href='/{{plan.tripId}}/day/{{plan.day}}'">
+						  	{{plan.day}}
+						</button>
+	  				
+	  				</div>
+	  			{% endfor %}
+	  		</div>
 
 
-			<div>
-				Select Hotel
-			</div>
-			<div>
-				Select Restaurant
-			</div>
-			<div>
-				Select Activity
-			</div>		  		
+
 	  	</div>
 	  	
 
   		<div class="float-btn float-top-center">
   			<button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect">
 			  	<i class="material-icons">add</i>
-			</button>	
+			</button>
   		</div>
 		
 	  	

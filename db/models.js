@@ -73,6 +73,8 @@ Activity.belongsToMany(Plan, {as: 'Activities', through: 'Plan', foreingKey: 'pl
 Restaurant.belongsToMany(Plan, {as: 'Restaurants', through: 'Plan', foreingKey: 'planId'});
 
 
+Trip.hasMany(Plan, {as: 'Trip'});
+
 Hotel.belongsTo(Place);
 Activity.belongsTo(Place);
 Restaurant.belongsTo(Place);
