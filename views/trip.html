@@ -33,12 +33,18 @@
 </div>
 
 <div id="panel-wrapper" class="col s12 m4 l3">
+
+  {% for hotel in trip.hotels %}
+    <div>{{hotel.name}}</div>
+  {% endfor %}
+
+  
   <div class="divider"></div>
   <div class="section">
     <h5>Select a trip</h5>			    
     <div class="row valign-wrapper">
       <div class="input-field col s9">
-        <select>
+        <select id="hotel-list">
           <option value="" disabled selected>Choose your option</option>
           <option value="1">Option 1</option>
           <option value="2">Option 2</option>
@@ -47,7 +53,7 @@
         <label>Hotel</label>
       </div>
       <div class="valign col s3">
-        <a class="btn-floating btn-small waves-effect waves-light">
+        <a id="hotel-btn" class="btn-floating btn-small waves-effect waves-light">
           <i class="material-icons">add</i>
         </a>  
       </div>
@@ -93,7 +99,7 @@
     	<li class="tab"><a href="#day{{plan.day}}">Day {{plan.day}}</a></li>		
 		{% endfor %}
     </ul>
-	  {% for plan in plans %}
+	  {% for plan in trip.plans %}
 	  <div id="day{{plan.day}}" class="col s12">Day {{plan.day}}</div>
 	  {% endfor %}      
 	</div>

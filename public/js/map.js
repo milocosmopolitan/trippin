@@ -6,6 +6,12 @@ var chicago = {lat: 41.85, lng: -87.65};
     // This example requires the Places library. Include the libraries=places
     // parameter when you first load the API. For example:
     // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+$(document).ready(function() {
+  $('#hotel-btn').on('click', function(){
+    console.log("Button is clicked");
+  });
+});
+
 function radarSearchControl(controlDiv, map) {
 
   var selectDiv = document.getElementById('pac-select');
@@ -31,6 +37,7 @@ function radarSearchControl(controlDiv, map) {
       });
 
       // Create the search box and link it to the UI element.
+      //var input = $('')
       var input = document.getElementById('pac-input');
       var searchBox = new google.maps.places.SearchBox(input);
       map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);

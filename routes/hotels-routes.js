@@ -12,3 +12,4 @@ const Restaurant = models.Restaurant;
 const Trip = models.Trip;
 const Plan = models.Plan;
 
+//CRUD

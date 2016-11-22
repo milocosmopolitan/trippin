@@ -29,7 +29,7 @@ router.post('/add', (req, res)=>{
 	})
 })
 
-router.get('/:tripId', (req, res, next)=>{
+router.param('tripId', (req, res, next)=>{
 	let trip;
 	// Look at what include does to SQL syntax
 	// include makes join between two associated table
@@ -84,7 +84,9 @@ router.get('/:tripId', (req, res, next)=>{
 			trip.plans.push(data[0]);
 		}
 
-		res.render('trip', {trip: trip});		
+		//res.render('trip', {trip: trip});		
+		res.locals.trip = trip;
+		next();
 	}).catch(next)
 })
 
