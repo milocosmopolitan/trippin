@@ -5,7 +5,7 @@ const nunjucks = require('nunjucks');
 const morgan = require('morgan');
 
 const models = require('./db/models');
-const routes = require('./routes');
+const routes = require('./routes/index');
 
 const path = require('path');
 const fs = require('fs');
@@ -41,6 +41,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 // setup router
 app.use(routes);
 
+
+// Error Handler
+app.use(function(err, req, res, next){
+    let status = err.status || 500;    
+    res.status(status).send(err.message);
+})
 
 const syncOptions = {
     /*force:true*/

@@ -1,88 +1,84 @@
-$nav-height: 5vh;
+/* 
+ * Color 
+ */
+$primary-color: #5ab35a;
 
+nav, footer.page-footer {
+  background-color: $primary-color;
+}
+
+
+/* 
+ * Font 
+ */
 h1 {
 	font-size: 18px;
 }
 
-#content-layout {
-	padding: 0 !important;
-	height: 90vh;
-	background-color: #EEEEEE;
-
-	> div {
-		margin: 0 !important;
-	}
-
-	#map-wrapper{
-		width: 70%;
-	}
-	#panel-wrapper {
-		width: 30%;
-	}
-}
-
-.float-btn {
-	position: absolute;
-}
-.float-top-center {
-    left: 50%;
-    top: -28px;
-}
-#map {
-	height: 100%;
+/*
+ * Overwriting Materilize
+ */
+.valign-wrapper.flex-end{
+	align-items: flex-end;
 }
 
 
+/* 
+ * Grid
+ */
 
-.mdl-layout__header {
-    min-height: $nav-height;
+#content-wrapper {
+  padding: 0 !important;
+  height: 90vh;
+  background-color: #EEEEEE;
 }
 
-/* ==========  Select Field Variables ========== */
-$color-black: "0,0,0";
-$select-background-color: transparent;
-$select-border-color: unquote("rgba(#{$color-black}, 0.12)") !default;
-$select-font-size: 16px;
-$select-color: unquote("rgba(#{$color-black}, 0.26)") !default;
-$select-padding: 4px;
-
-/* ==========  Select Field ========== */
-
-/* Style Select Field */
-select {
-  font-family: inherit;
-  background-color: transparent;
-  width: 100%;
-  padding: $select-padding 0;
-  font-size: $select-font-size;
-  color: $select-color;
-  border: none;
-  border-bottom: 1px solid $select-border-color;
+#map-wrapper, #map {
+  height: 100%;
 }
 
-/* Remove focus */
-select:focus {
-  outline: none}
+.controls {
+    margin-top: 10px;
+    border: 1px solid transparent;
+    border-radius: 2px 0 0 2px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    height: 32px;
+    outline: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  }
 
-/* Hide label */
-.mdl-selectfield label {display: none;}
-/* Use custom arrow */
-.mdl-selectfield select {appearance: none}
-.mdl-selectfield {
-  font-family: 'Roboto','Helvetica','Arial',sans-serif;
-  position: relative;
-    &:after {
-        position: absolute;
-        top: 0.75em;
-        right: 0.5em;
-        /* Styling the down arrow */
-        width: 0;
-        height: 0;
-        padding: 0;
-        content: '';
-        border-left: .25em solid transparent;
-        border-right: .25em solid transparent;
-        border-top: .375em solid $select-border-color;
-        pointer-events: none;
-    }
-}
+  #pac-input {
+    background-color: #fff;
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+    margin-left: 12px;
+    padding: 0 11px 0 13px;
+    text-overflow: ellipsis;
+    width: 300px;
+  }
+
+  #pac-input:focus {
+    border-color: #4d90fe;
+  }
+
+  .pac-container {
+    font-family: Roboto;
+  }
+
+  #type-selector {
+    color: #fff;
+    background-color: #4d90fe;
+    padding: 5px 11px 0px 11px;
+  }
+
+  #type-selector label {
+    font-family: Roboto;
+    font-size: 13px;
+    font-weight: 300;
+  }
+  #target {
+    width: 345px;
+  }
+

@@ -68,12 +68,12 @@ const Plan = db.define('plan', {
 })
 
 
-Hotel.belongsToMany(Plan, {as: 'Hotels', through: 'Plan', foreingKey: 'planId'});
-Activity.belongsToMany(Plan, {as: 'Activities', through: 'Plan', foreingKey: 'planId'});
-Restaurant.belongsToMany(Plan, {as: 'Restaurants', through: 'Plan', foreingKey: 'planId'});
+//Hotel.belongsToMany(Plan, {as: 'Hotels', through: 'Plan', foreingKey: 'planId'});
+//Activity.belongsToMany(Plan, {as: 'Activities', through: 'Plan', foreingKey: 'planId'});
+//Restaurant.belongsToMany(Plan, {as: 'Restaurants', through: 'Plan', foreingKey: 'planId'});
 
-
-Trip.hasMany(Plan, {as: 'Trip'});
+Plan.belongsTo(Trip);
+Trip.hasMany(Plan);
 
 Hotel.belongsTo(Place);
 Activity.belongsTo(Place);

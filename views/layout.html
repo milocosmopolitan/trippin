@@ -5,46 +5,66 @@
     <title>Secrets</title>
     <link href="/stylesheets/style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
+	
+	
 
-	<link rel="stylesheet" type="text/css" href="/stylesheet/style.css">
+	<!-- Compiled and minified CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
 
-	<script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+	<!-- Compiled and minified JavaScript -->
+	<script
+  		src="https://code.jquery.com/jquery-3.1.1.min.js"
+  		integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
 </head>
-<body>
-    
-    <!-- <nav>
-        <ul>
-            <li><a href="/secrets">Home</a></li>
-            <li><a href="/secrets/add">New Secret</a></li>
-        </ul>
-    </nav> -->
+<body>    
+  <nav>
+  	<div class="nav-wrapper">
+  		<a href="/" class="brand-logo">Trippin</a>
+  		<ul id="nav-mobile" class="right hide-on-med-and-down">
+    		<li><a href="/trip">Trips</a></li>
+  			<li><a href="/place">Places</a></li>
+    		<li><a href="">Contact</a></li>
+  		</ul>
+  	</div>
+	</nav>
+  
+	<div id="content-wrapper" class="row">
+    	{% block content %}{% endblock %}
+	</div>
 
-    <!-- The drawer is always open in large screens. The header is always shown,
-  	even in small screens. -->
-	<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-	  <header class="mdl-layout__header">
-	    <div class="mdl-layout__header-row">
-	    	<h1>Trippin</h1>
-	      <div class="mdl-layout-spacer"></div>
-	      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
-	                  mdl-textfield--floating-label mdl-textfield--align-right">
-	        <label class="mdl-button mdl-js-button mdl-button--icon"
-	               for="fixed-header-drawer-exp">
-	          <i class="material-icons">search</i>
-	        </label>
-	        <div class="mdl-textfield__expandable-holder">
-	          <input class="mdl-textfield__input" type="text" name="sample"
-	                 id="fixed-header-drawer-exp">
-	        </div>
-	      </div>
-	    </div>
-	  </header>
-	  <main class="mdl-layout__content">
-	    <div class="page-content">
-	    	{% block content %}{% endblock %}
-    	</div>
-	  </main>
-	</div>    
+	<footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Don't go tripping planning your trip.</h5>
+          <p class="grey-text text-lighten-4">Dear fellow travelers, Trippin allows you to pin your trip destination for each day of your trip. </p>
+        </div>
+        <div class="col l4 offset-l2 s12">
+        <h5 class="white-text">Links</h5>
+        <ul>
+          <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+          <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+          <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+          <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+        </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">© 2016 Copyright Reico & Milo
+        <a class="grey-text text-lighten-4 right" href="#!">github</a>
+      </div>
+    </div>
+  </footer>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('select').material_select();
+    });
+  </script>
 </body>
 </html>

@@ -1,0 +1,198 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div id="map-wrapper" class="col s12 m8 l9">
+  
+  <!-- This is select box for radar search within radius
+  https://developers.google.com/maps/documentation/javascript/examples/place-radar-search -->
+  
+  <div id="map-control">
+    <div id="pac-select">
+      <select>
+        <option>Hotel</option>
+        <option>Restaurant</option>
+        <optgroup label="Activities">
+          <option>Bar</option>
+          <option>Park</option>
+          <option>Cafe</option>
+          <option>Best View</option>
+        </optgroup>      
+      </select>
+    </div>
+    <div>
+      <!-- This is for the address search -->
+      <input id="pac-input" class="controls" type="text" placeholder="Search Box">    
+    </div>
+  </div>
+
+  <div id="map"></div>
+  <script>
+    var chicago = {lat: 41.85, lng: -87.65};
+    // This example adds a search box to a map, using the Google Place Autocomplete
+    // feature. People can enter geographical searches. The search box will return a
+    // pick list containing a mix of places and predicted search terms.
+
+    // This example requires the Places library. Include the libraries=places
+    // parameter when you first load the API. For example:
+    // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+    function CenterControl(controlDiv, map) {
+
+      var select = document.getElementById('pac-select');
+      controlDiv.appendChild(select);
+
+      select.addEventListener('change', function() {
+        map.setCenter(chicago);
+      });
+
+    }
+
+    function initAutocomplete() {
+      var map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: -33.8688, lng: 151.2195},
+        zoom: 13,
+        mapTypeId: 'roadmap'
+      });
+
+      // Create the search box and link it to the UI element.
+      var input = document.getElementById('pac-input');
+      var searchBox = new google.maps.places.SearchBox(input);
+      map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
+
+      
+      // Custom Control
+      var centerControlDiv = document.createElement('div');
+      var centerControl = new CenterControl(centerControlDiv, map);
+
+      centerControlDiv.index = 1;
+      map.controls[google.maps.ControlPosition.TOP_RIGHT].push(centerControlDiv);      
+      
+
+      // Bias the SearchBox results towards current map's viewport.
+      map.addListener('bounds_changed', function() {
+        searchBox.setBounds(map.getBounds());
+      });
+
+      var markers = [];
+      // Listen for the event fired when the user selects a prediction and retrieve
+      // more details for that place.
+      searchBox.addListener('places_changed', function() {
+        var places = searchBox.getPlaces();
+
+        if (places.length == 0) {
+          return;
+        }
+
+        // Clear out the old markers.
+        markers.forEach(function(marker) {
+          marker.setMap(null);
+        });
+        markers = [];
+
+        // For each place, get the icon, name and location.
+        var bounds = new google.maps.LatLngBounds();
+        places.forEach(function(place) {
+          if (!place.geometry) {
+            console.log("Returned place contains no geometry");
+            return;
+          }
+          var icon = {
+            url: place.icon,
+            size: new google.maps.Size(71, 71),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(17, 34),
+            scaledSize: new google.maps.Size(25, 25)
+          };
+
+          // Create a marker for each place.
+          markers.push(new google.maps.Marker({
+            map: map,
+            icon: icon,
+            title: place.name,
+            position: place.geometry.location
+          }));
+
+          if (place.geometry.viewport) {
+            // Only geocodes have viewport.
+            bounds.union(place.geometry.viewport);
+          } else {
+            bounds.extend(place.geometry.location);
+          }
+        });
+        map.fitBounds(bounds);
+      });
+    }
+
+  </script>
+  
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZC08lgoreqNUIikkN_tKMLO5FT-HkVeQ&libraries=places&callback=initAutocomplete" async defer></script>			
+</div>
+
+<div id="panel-wrapper" class="col s12 m4 l3">
+  <div class="divider"></div>
+  <div class="section">
+    <h5>Select a trip</h5>			    
+    <div class="row valign-wrapper">
+      <div class="input-field col s9">
+        <select>
+          <option value="" disabled selected>Choose your option</option>
+          <option value="1">Option 1</option>
+          <option value="2">Option 2</option>
+          <option value="3">Option 3</option>
+        </select>
+        <label>Hotel</label>
+      </div>
+      <div class="valign col s3">
+        <a class="btn-floating btn-small waves-effect waves-light">
+          <i class="material-icons">add</i>
+        </a>  
+      </div>
+    </div>
+    <div class="row valign-wrapper">
+      <div class="col s9">
+        <label>Restaurant</label>
+        <select class="browser-default">
+              <option value="" disabled selected>Choose your option</option>
+              <option value="1">Option 1</option>
+              <option value="2">Option 2</option>
+              <option value="3">Option 3</option>
+        </select>  
+      </div>
+      <div class="valign col s3">
+        <a class="btn-floating btn-small waves-effect waves-light">
+          <i class="material-icons">add</i>
+        </a>  
+      </div>
+    </div>
+    <div class="row valign-wrapper">
+      <div class="col s9">
+        <label>Activities</label>
+        <select class="browser-default">
+              <option value="" disabled selected>Choose your option</option>
+              <option value="1">Option 1</option>
+              <option value="2">Option 2</option>
+              <option value="3">Option 3</option>
+        </select>  
+      </div>
+      <div class="valign col s3">
+        <a class="btn-floating btn-small waves-effect waves-light">
+          <i class="material-icons">add</i>
+        </a>  
+      </div>
+    </div>    
+  </div>
+  <div class="divider"></div>
+  <div class="section">
+    <h5>Plan a new trip</h5>
+    <ul class="tabs tabs-transparent">
+    	{% for plan in trip.plans %}
+    	<li class="tab"><a href="#day{{plan.day}}">Day {{plan.day}}</a></li>		
+		{% endfor %}
+    </ul>
+	  {% for plan in plans %}
+	  <div id="day{{plan.day}}" class="col s12">Day {{plan.day}}</div>
+	  {% endfor %}      
+	</div>
+</div>		  	
+
+{% endblock %}
