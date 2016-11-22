@@ -95,12 +95,16 @@
   <div class="section">
     <h5>Plan a new trip</h5>
     <ul class="tabs tabs-transparent">
-    	{% for plan in trip.plans %}
-    	<li class="tab day-tab"><a href="#day{{plan.day}}" data-value="{{plan.day}}">Day {{plan.day}}</a></li>		
+    	{% for day in trip.days %}
+    	<li class="tab day-tab"><a href="#day{{day.day}}" data-value="{{day.day}}">Day {{day.day}}</a></li>		
 		{% endfor %}
     </ul>
-	  {% for plan in trip.plans %}
-	  <div id="day{{plan.day}}" class="col s12">Day {{plan.day}}</div>
+	  {% for day in trip.days %}
+	  <div id="day{{day.day}}" class="col s12">
+      {% for plan in day.plans %}
+      <div>{{plan.hotel.name}}</div>
+      {% endfor %} 
+    </div>
 	  {% endfor %}      
 	</div>
 </div>		  	

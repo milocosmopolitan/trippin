@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const models = require('../db/models');
+
+
+const _ = require('lodash');
 //const Promise = require('bluebird');
 
 module.exports = router;
@@ -40,7 +43,33 @@ router.get('/', (req, res, next)=>{
 		// res.locals.trip.restaurants = restaurants;
 		// res.locals.trip.activities = activities;
 
-		res.render('trip');	
+		
+
+		return Plan.findAll({
+			include: {model:Hotel},
+			where:{
+				tripId: res.locals.trip.id
+			}
+		})
+
+	}).then((data)=>{	
+		
+
+		for (var i = 0; i < res.locals.trip.days.length; i++) {
+			console.log('looping')
+			
+			if(res.locals.trip.days[i].dataValues.day === i+1){
+				res.locals.trip.days[i].plans = _.filter(data, function(o){
+					return (o.hotelId && o.day === i+1);
+				})
+			}			
+		}
+		console.log(res.locals.trip.days)
+		console.log(res.locals.trip.days[0].plans)
+		res.render('trip');
+		
+		
+		//console.log(res.locals.trip);
 	}).catch()
 	//console.log(trip);
 	//console.log(res.locals.trip);

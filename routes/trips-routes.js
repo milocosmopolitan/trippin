@@ -72,7 +72,6 @@ router.param('tripId', (req, res, next)=>{
 			return trip;
 		}		
 	}).then((data)=>{
-
 		// If previous then is returning 
 		// scenario 1 then you will have a single object of trip including associated plans
 		// scenario 2 then you will have an array with array[0] as new row added to plan table
@@ -83,9 +82,20 @@ router.param('tripId', (req, res, next)=>{
 			// When new plan for day 1 is created, we have to assume that trip.plans = [](empty array)
 			trip.plans.push(data[0]);
 		}
+		// This is group by SQL syntax to get unique numbers of days
+		return Plan.findAll({
+			attributes: [
+		        'day'
+		    ],
+			where: { tripId: req.params.tripId },
+			group: 'day'
+		})
+	}).then((data)=>{
+		res.locals.trip = trip;
+		res.locals.trip.days = data;		
 
 		//res.render('trip', {trip: trip});		
-		res.locals.trip = trip;
+		
 		next();
 	}).catch(next)
 })
