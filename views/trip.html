@@ -34,21 +34,19 @@
 
 <div id="panel-wrapper" class="col s12 m4 l3">
 
-  {% for hotel in trip.hotels %}
-    <div>{{hotel.name}}</div>
-  {% endfor %}
-
   
+
+
   <div class="divider"></div>
   <div class="section">
     <h5>Select a trip</h5>			    
     <div class="row valign-wrapper">
       <div class="input-field col s9">
         <select id="hotel-list">
-          <option value="" disabled selected>Choose your option</option>
-          <option value="1">Option 1</option>
-          <option value="2">Option 2</option>
-          <option value="3">Option 3</option>
+          <option value="" disabled selected>Choose your option</option>          
+          {% for hotel in trip.hotels %}
+          <option value="{{hotel.id}}">{{hotel.name}}</option>          
+          {% endfor %}          
         </select>
         <label>Hotel</label>
       </div>
@@ -59,14 +57,14 @@
       </div>
     </div>
     <div class="row valign-wrapper">
-      <div class="col s9">
+      <div class="input-field col s9">
+        <select id="hotel-list">
+          <option value="" disabled selected>Choose your option</option>          
+          {% for restaurant in trip.restaurants %}
+          <option value="{{restaurant.id}}">{{restaurant.name}}</option>          
+          {% endfor %}         
+        </select>
         <label>Restaurant</label>
-        <select class="browser-default">
-              <option value="" disabled selected>Choose your option</option>
-              <option value="1">Option 1</option>
-              <option value="2">Option 2</option>
-              <option value="3">Option 3</option>
-        </select>  
       </div>
       <div class="valign col s3">
         <a class="btn-floating btn-small waves-effect waves-light">
@@ -75,15 +73,17 @@
       </div>
     </div>
     <div class="row valign-wrapper">
-      <div class="col s9">
+
+      <div class="input-field col s9">
+        <select id="hotel-list">
+          <option value="" disabled selected>Choose your option</option>          
+          {% for activity in trip.activities %}
+          <option value="{{activity.id}}">{{activity.name}}</option>          
+          {% endfor %}
+        </select>
         <label>Activities</label>
-        <select class="browser-default">
-              <option value="" disabled selected>Choose your option</option>
-              <option value="1">Option 1</option>
-              <option value="2">Option 2</option>
-              <option value="3">Option 3</option>
-        </select>  
       </div>
+     
       <div class="valign col s3">
         <a class="btn-floating btn-small waves-effect waves-light">
           <i class="material-icons">add</i>
@@ -96,7 +96,7 @@
     <h5>Plan a new trip</h5>
     <ul class="tabs tabs-transparent">
     	{% for plan in trip.plans %}
-    	<li class="tab"><a href="#day{{plan.day}}">Day {{plan.day}}</a></li>		
+    	<li class="tab day-tab"><a href="#day{{plan.day}}" data-value="{{plan.day}}">Day {{plan.day}}</a></li>		
 		{% endfor %}
     </ul>
 	  {% for plan in trip.plans %}

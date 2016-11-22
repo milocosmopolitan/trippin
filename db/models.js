@@ -75,6 +75,17 @@ const Plan = db.define('plan', {
 Plan.belongsTo(Trip);
 Trip.hasMany(Plan);
 
+Plan.belongsTo(Hotel);
+//Plan.belongsToMany(Hotel, {through: 'PlanHotels'});
+//Plan.hasMany(Hotel);
+
+// Activity.belongsToMany(Plan);
+// Plan.hasMany(Activity);
+
+// Restaurant.belongsToMany(Plan);
+// Plan.hasMany(Restaurant);
+
+
 Hotel.belongsTo(Place);
 Activity.belongsTo(Place);
 Restaurant.belongsTo(Place);

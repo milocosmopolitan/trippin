@@ -9,8 +9,8 @@ const Place = models.Place;
 const Hotel = models.Hotel;
 const Activity = models.Activity;
 const Restaurant = models.Restaurant;
-// const Trip = models.Trip;
-// const Plan = models.Plan;
+const Trip = models.Trip;
+const Plan = models.Plan;
 
 
 // https://developers.google.com/maps/documentation/javascript/importing_data
@@ -39,11 +39,24 @@ router.get('/', (req, res, next)=>{
 		// res.locals.trip.hotels = hotels;
 		// res.locals.trip.restaurants = restaurants;
 		// res.locals.trip.activities = activities;
-		
+
 		res.render('trip');	
 	}).catch()
 	//console.log(trip);
 	//console.log(res.locals.trip);
 	//res.send('I am in the route');
+	
+})
+
+router.post('/hotel', (req, res, next) => {
+	
+	Plan.create({
+		day: req.body.day,
+		hotelId: req.body.hotelId,
+		tripId: res.locals.trip.id
+	}).then((createdPlan)=>{
+		console.log(createdPlan)
+		res.json(createdPlan);
+	})
 	
 })

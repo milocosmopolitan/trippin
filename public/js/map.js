@@ -9,6 +9,24 @@ var chicago = {lat: 41.85, lng: -87.65};
 $(document).ready(function() {
   $('#hotel-btn').on('click', function(){
     console.log("Button is clicked");
+    //console.log($('#hotel-list').val());
+
+    var selectedVal = $('#hotel-list').val()
+    var day;
+
+    $('.day-tab').each(function(index, element){
+      if($(this).children().hasClass('active')){
+        day = $(this).children().data('value'); 
+      }      
+    })
+
+    $.post(window.location.href+'/hotel', {
+      hotelId: selectedVal, 
+      day: day
+    }, function(result){
+        console.log(result);
+    });
+
   });
 });
 
@@ -19,10 +37,14 @@ function radarSearchControl(controlDiv, map) {
   //controlDiv.appendChild(select);
 
   let previous;
+
+
   $('#radar-search').on('focus', function(){
     previous = this.value;
   }).change(function(){
-    if(this.value !== previous) console.log(this.value);
+    if(this.value !== previous) {
+      console.log(this.value); 
+    }
     previous = this.value;
   });
 
