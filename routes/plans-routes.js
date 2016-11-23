@@ -18,10 +18,17 @@ const Plan = models.Plan;
 
 // https://developers.google.com/maps/documentation/javascript/importing_data
 
+// receives GET request for url *.baseurl/trip/:tripId/plan/
 router.get('/', (req, res, next)=>{
 
+	// I'm calling four sequelize calls and I feel like this is heavy operation
+	// It might be better to create join table of four table.
+	// If you have any suggestion to optimize this let me know
 	let hotels, restaurants, activities;
 
+
+	// See how I'm appending promised result into res.locals.trip
+	// Where we have set up in router.param('tripId')
 	Hotel.findAll({
 		include: { model: Place }
 	}).then((hotels)=>{
@@ -39,19 +46,12 @@ router.get('/', (req, res, next)=>{
 	}).then((activities)=>{
 		res.locals.trip.activities = activities;
 
-		// res.locals.trip.hotels = hotels;
-		// res.locals.trip.restaurants = restaurants;
-		// res.locals.trip.activities = activities;
-
-		
-
 		return Plan.findAll({
 			include: {model:Hotel},
 			where:{
 				tripId: res.locals.trip.id
 			}
 		})
-
 	}).then((data)=>{	
 		
 
@@ -77,8 +77,7 @@ router.get('/', (req, res, next)=>{
 	
 })
 
-router.post('/hotel', (req, res, next) => {
-	
+router.post('/hotel', (req, res, next) => {	
 	Plan.create({
 		day: req.body.day,
 		hotelId: req.body.hotelId,
@@ -86,6 +85,5 @@ router.post('/hotel', (req, res, next) => {
 	}).then((createdPlan)=>{
 		console.log(createdPlan)
 		res.json(createdPlan);
-	})
-	
+	})	
 })

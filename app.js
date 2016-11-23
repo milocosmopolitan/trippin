@@ -36,7 +36,7 @@ app.use(bodyParser.urlencoded({extend:false}));
 
 // setup static
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use('/bower_components',  express.static(__dirname + '/bower_components'));
 
 // setup router
 app.use(routes);
@@ -49,7 +49,7 @@ app.use(function(err, req, res, next){
 })
 
 const syncOptions = {
-    /*force:true*/
+    // force:true
 }
 
 const Place = models.Place;

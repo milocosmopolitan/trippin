@@ -2,41 +2,7 @@
 
 {% block content %}
 
-<div id="map-wrapper" class="col s12 m8 l9">
-  
-  <!-- This is select box for radar search within radius
-  https://developers.google.com/maps/documentation/javascript/examples/place-radar-search -->
-  
-  <div id="map-control">
-    <div id="pac-select">
-      <select id="radar-search">
-        <option>Hotel</option>
-        <option>Restaurant</option>
-        <optgroup label="Activities">
-          <option>Bar</option>
-          <option>Park</option>
-          <option>Cafe</option>
-          <option>Best View</option>
-        </optgroup>      
-      </select>
-    </div>
-    <div>
-      <!-- This is for the address search -->
-      <input id="pac-input" class="controls" type="text" placeholder="Search Box">    
-    </div>
-  </div>
-
-  <div id="map"></div>
-  <script src="/js/map.js"></script>
-  
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZC08lgoreqNUIikkN_tKMLO5FT-HkVeQ&libraries=places&callback=initAutocomplete" async defer></script>			
-</div>
-
 <div id="panel-wrapper" class="col s12 m4 l3">
-
-  
-
-
   <div class="divider"></div>
   <div class="section">
     <h5>Select a trip</h5>			    
@@ -45,7 +11,10 @@
         <select id="hotel-list">
           <option value="" disabled selected>Choose your option</option>          
           {% for hotel in trip.hotels %}
-          <option value="{{hotel.id}}">{{hotel.name}}</option>          
+          <option value="{{hotel.id}}" 
+            data-rate="{{hotel.num_stars}}" 
+            data-lat="{{hotel.place.location.lat}}"
+            data-long="{{hotel.place.location.long}}">{{hotel.name}}</option>
           {% endfor %}          
         </select>
         <label>Hotel</label>
@@ -61,7 +30,11 @@
         <select id="hotel-list">
           <option value="" disabled selected>Choose your option</option>          
           {% for restaurant in trip.restaurants %}
-          <option value="{{restaurant.id}}">{{restaurant.name}}</option>          
+          <option value="{{restaurant.id}}" 
+            data-cuisine="{{restaurant.cuisine}}" 
+            data-price="{{restaurant.price}}" 
+            data-lat="{{restaurant.place.location.lat}}"
+            data-long="{{restaurant.place.location.long}}">{{restaurant.name}}</option>
           {% endfor %}         
         </select>
         <label>Restaurant</label>
@@ -78,7 +51,10 @@
         <select id="hotel-list">
           <option value="" disabled selected>Choose your option</option>          
           {% for activity in trip.activities %}
-          <option value="{{activity.id}}">{{activity.name}}</option>          
+          <option value="{{activity.id}}" 
+            data-age="{{activity.age_range}}"             
+            data-lat="{{activity.place.location.lat}}"
+            data-long="{{activity.place.location.long}}">{{activity.name}}</option>
           {% endfor %}
         </select>
         <label>Activities</label>
@@ -94,16 +70,56 @@
   <div class="divider"></div>
   <div class="section">
     <h5>Plan a new trip</h5>
+    <!-- This is tabs for days -->
     <ul class="tabs tabs-transparent">
     	{% for day in trip.days %}
     	<li class="tab day-tab"><a href="#day{{day.day}}" data-value="{{day.day}}">Day {{day.day}}</a></li>		
-		{% endfor %}
+		  {% endfor %}
     </ul>
+
+    <!-- This is tab containers for days -->
 	  {% for day in trip.days %}
-	  <div id="day{{day.day}}" class="col s12">
-      {% for plan in day.plans %}
-      <div>{{plan.hotel.name}}</div>
-      {% endfor %} 
+	  <div id="day{{day.day}}" class="col s12 tab-container">
+      <div id="hotel-plan" class="plan-group">
+        <h6>Hotel</h6>
+        {% for plan in day.plans %}
+          <div class="list-item row">
+            <div class="col s10">{{plan.hotel.name}}</div>
+            <div class="col s2">
+              <a>
+                <i class="material-icons">clear</i>
+              </a>  
+            </div>
+          </div>
+        {% endfor %}   
+      </div>
+      <div id="restaurant-plan">
+        <h6>Restaurant</h6>
+        {% for plan in day.plans %}
+          <div class="list-item row">
+            <div class="col s10">{{plan.hotel.name}}</div>
+            <div class="col s2">
+              <a>
+                <i class="material-icons">clear</i>
+              </a>  
+            </div>
+          </div>
+        {% endfor %}   
+      </div>
+      <div id="activities-plan">
+        <h6>Activities</h6>
+        {% for plan in day.plans %}
+          <div class="list-item row">
+            <div class="col s10">{{plan.hotel.name}}</div>
+            <div class="col s2">
+              <a>
+                <i class="material-icons">clear</i>
+              </a>  
+            </div>
+          </div>
+        {% endfor %}   
+      </div>
+
     </div>
 	  {% endfor %}      
 	</div>

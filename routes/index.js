@@ -6,6 +6,8 @@ const TripsRouter = require('./trips-routes');
 
 module.exports = router;
       
+
+// receives GET request for url *.baseurl/
 router.get('/', (req, res)=>{
 	Trip.findAll()
 	.then((data)=>{
@@ -13,4 +15,6 @@ router.get('/', (req, res)=>{
 	})	
 })
 
+// use TripRouter as middleware for all types of request 
+// for url *.baseurl/trip
 router.use('/trip', TripsRouter);

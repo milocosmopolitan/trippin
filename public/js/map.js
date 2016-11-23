@@ -1,34 +1,11 @@
+// This example adds a search box to a map, using the Google Place Autocomplete
+// feature. People can enter geographical searches. The search box will return a
+// pick list containing a mix of places and predicted search terms.
+
+// This example requires the Places library. Include the libraries=places
+// parameter when you first load the API. For example:
+// <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 var chicago = {lat: 41.85, lng: -87.65};
-    // This example adds a search box to a map, using the Google Place Autocomplete
-    // feature. People can enter geographical searches. The search box will return a
-    // pick list containing a mix of places and predicted search terms.
-
-    // This example requires the Places library. Include the libraries=places
-    // parameter when you first load the API. For example:
-    // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
-$(document).ready(function() {
-  $('#hotel-btn').on('click', function(){
-    console.log("Button is clicked");
-    //console.log($('#hotel-list').val());
-
-    var selectedVal = $('#hotel-list').val()
-    var day;
-
-    $('.day-tab').each(function(index, element){
-      if($(this).children().hasClass('active')){
-        day = $(this).children().data('value'); 
-      }      
-    })
-
-    $.post(window.location.href+'/hotel', {
-      hotelId: selectedVal, 
-      day: day
-    }, function(result){
-        console.log(result);
-    });
-
-  });
-});
 
 function radarSearchControl(controlDiv, map) {
 
@@ -82,6 +59,8 @@ function radarSearchControl(controlDiv, map) {
       // Listen for the event fired when the user selects a prediction and retrieve
       // more details for that place.
       searchBox.addListener('places_changed', function() {
+
+        console.log('Place is changed');
         var places = searchBox.getPlaces();
 
         if (places.length == 0) {

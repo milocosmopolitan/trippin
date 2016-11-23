@@ -64,7 +64,7 @@ var data = {
 };
 
 const syncOptions = {
-    force: true
+    // force: true
 }
 
 Place.sync(syncOptions)    

@@ -7,6 +7,19 @@ nav, footer.page-footer {
   background-color: $primary-color;
 }
 
+.tabs.tabs-transparent .tab a:hover, 
+.tabs.tabs-transparent .tab a.active {
+	color: $primary-color;
+}
+.tabs.tabs-transparent .indicator {
+    background-color: $primary-color;
+}
+
+.tabs.tabs-transparent .tab a, 
+.tabs.tabs-transparent .tab.disabled a, 
+.tabs.tabs-transparent .tab.disabled a:hover {
+    color: rgba(105, 105, 105, 0.7);
+}
 
 /* 
  * Font 
@@ -14,7 +27,9 @@ nav, footer.page-footer {
 h1 {
 	font-size: 18px;
 }
-
+.plan-group h6 {
+	font-weight: 700;
+}
 /*
  * Overwriting Materilize
  */
@@ -37,6 +52,30 @@ h1 {
   height: 100%;
 }
 
+#panel-wrapper .section .row {
+	margin: 0;
+}
+
+#map-control {
+	position: relative;
+	z-index: 10;
+	#pac-select{
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+}
+
+.tab-container {	
+	overflow-y: scroll;
+    height: 200px;
+}
+
+
+.btn-mini {
+	width: 20px;
+    height: 20px;
+}
 .controls {
     margin-top: 10px;
     border: 1px solid transparent;

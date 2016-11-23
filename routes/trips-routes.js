@@ -13,6 +13,7 @@ const Trip = models.Trip;
 const Plan = models.Plan;
 
 
+// receives GET request for url *.baseurl/trip/
 router.get('/', (req, res)=>{
 	Trip.findAll()
 	.then((data)=>{
@@ -20,6 +21,7 @@ router.get('/', (req, res)=>{
 	})
 })
 
+// receives POST request for url *.baseurl/trip/add
 router.post('/add', (req, res)=>{
 	Trip.build({
 		name: req.body.name
@@ -29,13 +31,16 @@ router.post('/add', (req, res)=>{
 	})
 })
 
+// use this middleware for all types of request where its url
+// includes parameter 'tripId'
+
 router.param('tripId', (req, res, next)=>{
 	let trip;
+
 	// Look at what include does to SQL syntax
 	// include makes join between two associated table
 	// if required keyed value is set to true table will INNER JOIN
 	// if set to false LEFT join
-
 	Trip.findOne({		
 		include: { model: Plan, required: false},
 		where: {
@@ -91,13 +96,14 @@ router.param('tripId', (req, res, next)=>{
 			group: 'day'
 		})
 	}).then((data)=>{
+
+		// See how locals is used in next routes
 		res.locals.trip = trip;
 		res.locals.trip.days = data;		
-
-		//res.render('trip', {trip: trip});		
-		
 		next();
 	}).catch(next)
 })
 
+// use PlansRouter as middleware for all types of request 
+// for url *.baseurl/trip/:tripId/plan
 router.use('/:tripId/plan', PlansRouter);

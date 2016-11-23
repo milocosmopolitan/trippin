@@ -18,7 +18,11 @@ const Place = db.define('place', {
 		type: Sequelize.STRING
 	},
 	location: {
-		type: Sequelize.ARRAY(Sequelize.DECIMAL)
+		type: Sequelize.ARRAY(Sequelize.DECIMAL),
+		get: function(){
+			let location = this.getDataValue('location');				
+			return {lat: location[0], long: location[1]};
+		}
 	}
 });
 
@@ -85,10 +89,19 @@ Plan.belongsTo(Hotel);
 // Restaurant.belongsToMany(Plan);
 // Plan.hasMany(Restaurant);
 
-
 Hotel.belongsTo(Place);
+Place.hasMany(Hotel);
+
 Activity.belongsTo(Place);
+Place.hasMany(Activity);
+
 Restaurant.belongsTo(Place);
+Place.hasMany(Restaurant);
+
+
+
+
+
 
 module.exports = {
     Place: Place,

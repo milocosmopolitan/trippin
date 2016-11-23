@@ -2,26 +2,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Secrets</title>
-    <link href="/stylesheets/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	
-	
+  <title>Secrets</title>
+  <link href="/stylesheets/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-	<!-- Compiled and minified CSS -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
 
-	<!-- Compiled and minified JavaScript -->
-	<script
-  		src="https://code.jquery.com/jquery-3.1.1.min.js"
-  		integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-  		crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
-  
+  <!-- 
+  ### BOWER_COMPONENTS ###
+  open app.js in root folder to view how bower_componenet foler is set with express.static() -->
+		
+	<link rel="stylesheet" href="/bower_components/materialize/dist/css/materialize.min.css">
+
+  <!-- 
+  ### Orders Matter!! ###
+
+  When you are loading javascript file that includes jQuery methods
+  MAKE SURE you load jquery.js before those files
+  -->
+  <script src="/bower_components/jQuery/dist/jquery.min.js"></script>
+  <script src="/bower_components/materialize/dist/js/materialize.min.js"></script>
+
+  <!-- 
+  ### Why is following js files located in public directory? ###
+
+  Since we have set up /public directory with express.static,
+  local frontend js & css file should be located inside public directory
+  -->
+  <script type="text/javascript" src="/js/main.js"></script>
+  <script type="text/javascript" src="/js/map.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
 </head>
-<body>    
+<body> 
+  <!-- 
+  ### Navigation ###
+  This is where navigation of the website located
+  Materialize nav documentation
+  link: 
+  -->   
   <nav>
   	<div class="nav-wrapper">
   		<a href="/" class="brand-logo">Trippin</a>
@@ -33,10 +51,53 @@
   	</div>
 	</nav>
   
+  
 	<div id="content-wrapper" class="row">
+
+      <!-- 
+      ### Map ###
+      Trying to expose you guys with nunjucks include feature
+      This will append html of the file you include
+      This is good way to DRY up your code.
+      -->
+      {% include "map.html" %}
+
+      <!-- 
+      ### Content ###
+      This is where content of view file will be appended
+      -->
     	{% block content %}{% endblock %}
+
 	</div>
 
+  <!-- 
+  ### Google Map API Call ###
+  This is where the site is sending request to google server with API Key set up at Google Developer Console with callback function we created
+
+  callback=initAutocomplete
+
+  initAutocomplete is function we created in map.js file
+  This line is telling Google server to initialize Google map according to this callback
+
+  libraries=places
+  This line is telling Google server to return Google places library to response
+
+  link: 
+  -->
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC307FhrQS-FexylrJfdMH6ABKVSfUhfRQ&libraries=places&callback=initAutocomplete" async defer></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('select').material_select();
+    });
+  </script>
+
+  <!-- 
+  ### Footer ###
+  This is where navigation of the website located
+  Materialize nav documentation
+  link: 
+  -->
 	<footer class="page-footer">
     <div class="container">
       <div class="row">
@@ -61,10 +122,6 @@
       </div>
     </div>
   </footer>
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $('select').material_select();
-    });
-  </script>
+  
 </body>
 </html>
