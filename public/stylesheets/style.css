@@ -45,6 +45,9 @@ h1 {
 #panel-wrapper .section .row {
   margin: 0; }
 
+#panel-wrapper .dropdown-content li > a, .dropdown-content li > span {
+  font-size: 12px; }
+
 #map-control {
   position: relative;
   z-index: 10; }

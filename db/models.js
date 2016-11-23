@@ -80,6 +80,8 @@ Plan.belongsTo(Trip);
 Trip.hasMany(Plan);
 
 Plan.belongsTo(Hotel);
+Plan.belongsTo(Restaurant);
+Plan.belongsTo(Activity);
 //Plan.belongsToMany(Hotel, {through: 'PlanHotels'});
 //Plan.hasMany(Hotel);
 

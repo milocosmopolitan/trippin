@@ -10,7 +10,7 @@
       <div class="input-field col s9">
         <select id="hotel-list">
           <option value="" disabled selected>Choose your option</option>          
-          {% for hotel in trip.hotels %}
+          {% for hotel in places.hotels %}
           <option value="{{hotel.id}}" 
             data-rate="{{hotel.num_stars}}" 
             data-lat="{{hotel.place.location.lat}}"
@@ -27,9 +27,9 @@
     </div>
     <div class="row valign-wrapper">
       <div class="input-field col s9">
-        <select id="hotel-list">
+        <select id="restaurant-list">
           <option value="" disabled selected>Choose your option</option>          
-          {% for restaurant in trip.restaurants %}
+          {% for restaurant in places.restaurants %}
           <option value="{{restaurant.id}}" 
             data-cuisine="{{restaurant.cuisine}}" 
             data-price="{{restaurant.price}}" 
@@ -48,9 +48,9 @@
     <div class="row valign-wrapper">
 
       <div class="input-field col s9">
-        <select id="hotel-list">
+        <select id="activity-list">
           <option value="" disabled selected>Choose your option</option>          
-          {% for activity in trip.activities %}
+          {% for activity in places.activities %}
           <option value="{{activity.id}}" 
             data-age="{{activity.age_range}}"             
             data-lat="{{activity.place.location.lat}}"
@@ -69,11 +69,19 @@
   </div>
   <div class="divider"></div>
   <div class="section">
-    <h5>Plan a new trip</h5>
-    <!-- This is tabs for days -->
+    <div class="section-header row">      
+      <div class="col s10">
+        <h5>Plan a new trip</h5>
+      </div>
+      <div class="valign col s2">
+        <a class="btn-floating btn-small waves-effect waves-light">
+          <i class="material-icons">add</i>
+        </a>  
+      </div>      
+    </div>
     <ul class="tabs tabs-transparent">
     	{% for day in trip.days %}
-    	<li class="tab day-tab"><a href="#day{{day.day}}" data-value="{{day.day}}">Day {{day.day}}</a></li>		
+    	<li class="tab day-tab"><a href="#day{{day.day}}" data-value="{{day.day}}" class="tab-link">Day {{day.day}}</a></li>		
 		  {% endfor %}
     </ul>
 
@@ -82,42 +90,48 @@
 	  <div id="day{{day.day}}" class="col s12 tab-container">
       <div id="hotel-plan" class="plan-group">
         <h6>Hotel</h6>
-        {% for plan in day.plans %}
+        <div class="plan-list">
+        {% for plan in plans['day'+day.day].hotels %}
           <div class="list-item row">
             <div class="col s10">{{plan.hotel.name}}</div>
             <div class="col s2">
-              <a>
+              <a class="clear-hotel" data-value="{{plan.hotel.id}}">
                 <i class="material-icons">clear</i>
               </a>  
             </div>
           </div>
-        {% endfor %}   
+        {% endfor %}
+        </div>
       </div>
-      <div id="restaurant-plan">
+      <div id="restaurant-plan" class="plan-group">
         <h6>Restaurant</h6>
-        {% for plan in day.plans %}
+        <div class="plan-list">
+        {% for plan in plans['day'+day.day].restaurants %}
           <div class="list-item row">
-            <div class="col s10">{{plan.hotel.name}}</div>
+            <div class="col s10">{{plan.restaurant.name}}</div>
             <div class="col s2">
-              <a>
+              <a class="clear-restaurant" data-value="{{plan.restaurant.id}}">
                 <i class="material-icons">clear</i>
               </a>  
             </div>
           </div>
-        {% endfor %}   
+        {% endfor %}
+        </div>   
       </div>
-      <div id="activities-plan">
+      <div id="activities-plan" class="plan-group">
         <h6>Activities</h6>
-        {% for plan in day.plans %}
+        <div class="plan-list">
+        {% for plan in plans['day'+day.day].activities %}
           <div class="list-item row">
-            <div class="col s10">{{plan.hotel.name}}</div>
+            <div class="col s10">{{plan.activity.name}}</div>
             <div class="col s2">
-              <a>
+              <a class="clear-activity" data-value="{{plan.activity.id}}">
                 <i class="material-icons">clear</i>
               </a>  
             </div>
           </div>
         {% endfor %}   
+        </div>
       </div>
 
     </div>
