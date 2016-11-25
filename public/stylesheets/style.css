@@ -22,6 +22,9 @@ nav, footer.page-footer {
 h1 {
   font-size: 18px; }
 
+h5 {
+  font-size: 1.34rem !important; }
+
 .plan-group h6 {
   font-weight: 700; }
 
@@ -30,6 +33,26 @@ h1 {
  */
 .valign-wrapper.flex-end {
   align-items: flex-end; }
+
+.fixed-action-btn {
+  margin-right: 15px; }
+
+.fixed-action-btn {
+  right: 0 !important;
+  bottom: inherit !important;
+  /* bottom: 23px; */
+  /* padding-top: 15px;
+    margin-bottom: 0;
+    z-index: 998; */ }
+
+.fixed-action-btn.horizontal ul {
+  right: 0px;
+  top: 150%;
+  width: 100%; }
+
+.fixed-action-btn.horizontal ul li {
+  display: block;
+  margin: 15px 0 0 0; }
 
 /* 
  * Grid

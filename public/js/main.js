@@ -109,12 +109,13 @@ trippin.prototype.addPlan = function(planType, options) {
 
     let _this = this,
         activeTab = this.elem.getActiveTabValue(),
-        $listItems = this.elem.dayPlanListItems(activeTab, planType),
+        //$listItems = this.elem.dayPlanListItems(activeTab, planType),
         dataId = this.elem.selectList(planType).val(),
 
         isDuplicate = function() {
             // console.log('Is Duplicate?', $listItems)
-            let result = false;
+            let result = false,
+                $listItems = _this.elem.dayPlanListItems(activeTab, planType);
         
             $listItems.each(function(){
                 //console.log('id', parseInt(dataId))
@@ -125,6 +126,7 @@ trippin.prototype.addPlan = function(planType, options) {
         },
 
         isEmpty = function(){
+            let $listItems = _this.elem.dayPlanListItems(activeTab, planType);
             console.log('$listItems.length', $listItems.length)
             if(options && options.allowMultiple) return true;
             return !$listItems || $listItems.length === 0 ? true : false;
@@ -151,16 +153,15 @@ trippin.prototype.addPlan = function(planType, options) {
                 
                 /*
                 remove plan button event
-                 */                
-                console.log($(`#day${activeTab}>#${planType}-plan`).find('.list-item')) 
-                $(`#day${activeTab}>#${planType}-plan`).find('.list-item').last().addEventListener('click', function() {
+                 */
+                $(`#day${activeTab}>#${planType}-plan`).find('.list-item').last().get(0).addEventListener('click', function() {
                     console.log('this', this)
                     return _this.removePlan(planType, this);
                 });
 
             });
         },function(err){
-            console.log(err);
+            alert(err);
             return false;
         })
 };
