@@ -40,7 +40,7 @@
         <label>Restaurant</label>
       </div>
       <div class="valign col s3">
-        <a class="btn-floating btn-small waves-effect waves-light">
+        <a id="restaurant-btn" class="btn-floating btn-small waves-effect waves-light">
           <i class="material-icons">add</i>
         </a>  
       </div>
@@ -61,7 +61,7 @@
       </div>
      
       <div class="valign col s3">
-        <a class="btn-floating btn-small waves-effect waves-light">
+        <a id="activity-btn" class="btn-floating btn-small waves-effect waves-light">
           <i class="material-icons">add</i>
         </a>  
       </div>
@@ -92,10 +92,10 @@
         <h6>Hotel</h6>
         <div class="plan-list">
         {% for plan in plans['day'+day.day].hotels %}
-          <div class="list-item row">
+          <div class="list-item row" data-id="{{plan.hotel.id}}">
             <div class="col s10">{{plan.hotel.name}}</div>
             <div class="col s2">
-              <a class="clear-hotel" data-value="{{plan.hotel.id}}">
+              <a class="clear-hotel">
                 <i class="material-icons">clear</i>
               </a>  
             </div>
@@ -107,10 +107,10 @@
         <h6>Restaurant</h6>
         <div class="plan-list">
         {% for plan in plans['day'+day.day].restaurants %}
-          <div class="list-item row">
+          <div class="list-item row" data-id="{{plan.restaurant.id}}">
             <div class="col s10">{{plan.restaurant.name}}</div>
             <div class="col s2">
-              <a class="clear-restaurant" data-value="{{plan.restaurant.id}}">
+              <a class="clear-restaurant">
                 <i class="material-icons">clear</i>
               </a>  
             </div>
@@ -118,14 +118,14 @@
         {% endfor %}
         </div>   
       </div>
-      <div id="activities-plan" class="plan-group">
+      <div id="activity-plan" class="plan-group">
         <h6>Activities</h6>
         <div class="plan-list">
         {% for plan in plans['day'+day.day].activities %}
-          <div class="list-item row">
+          <div class="list-item row" data-id="{{plan.activity.id}}">
             <div class="col s10">{{plan.activity.name}}</div>
             <div class="col s2">
-              <a class="clear-activity" data-value="{{plan.activity.id}}">
+              <a class="clear-activity">
                 <i class="material-icons">clear</i>
               </a>  
             </div>

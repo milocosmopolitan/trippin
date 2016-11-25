@@ -1,116 +1,187 @@
-function addHotel() {
-    console.log("Hotel button is clicked");
+'use strict';
 
-    var day, selectedVal = $('#hotel-list').val();
-
-    // $.when & done is used for Async function with jQuery
-    // This function looks similar to thenable function.
-    // There are ways to use defer instead of this
-    // which I don't fully understand so... pass
-
-    $.when(
-        // here we are running through each DOM node with class '.day-tab'. Look at line 76 on /views/trip.html
-        $('.tab-link').each(function() {
-            if ($(this).hasClass('active')) {
-                day = $(this).data('value');
-            }
-        })
-
-    ).done(function() {
-      console.log(day);
-        var listItem = $('#day' + day+'>#hotel-plan').find('.list-item');
-
-        if (!listItem || listItem.length === 0) {
-
-            // following lines are sending POST request to the server.
-            // which means you can recieve this POST request from express router.
-            // kind of similar to Sequalize querying right?
-            // window.location.href is used to get current url from broweser
-
-            $.post(window.location.href + '/hotel', {
-                hotelId: selectedVal,
-                day: day
-            }, function(hotel) {
-                // result of Async POST call is now a Sequelize instance pass by express response.json();
-                console.log(hotel);
-
-                let $template = $(''+
-                  '<div class="list-item row">' +
-                    '<div class="col s10">'+hotel.name+'</div>'+
-                    '<div class="col s2">'+
-                      '<a class="clear-hotel" data-value="'+hotel.id+'">'+
-                        '<i class="material-icons">clear</i>'+
-                      '</a>'+
-                    '</div>'+
-                  '</div>');
-                $('#hotel-plan>.plan-list').append($template);
-            });
-        } else {
-            alert('Hotel already exist');
+const trippin = function(){
+    this.planTypes = ['hotel', 'restaurant', 'activity'];
+    this.elem = {        
+        getActiveTabValue: function() {
+            let value;
+            $('.tab-link').each(function() {
+                if ($(this).hasClass('active')) {
+                    value = $(this).data('value');
+                }
+            })
+            return value;
+        },
+        selectList: function(planType) {
+            return $(`#${planType}-list`);
+        },
+        addPlanButton: function(planType) {
+            return $(`#${planType}-btn`);
+        },
+        removePlanButton: function(planType) {
+            return $(`.clear-${planType}`);
+        },
+        dayPlanListItems:function(day, planType) {
+            return $(`#day${day}>#${planType}-plan`).find('.list-item');
         }
+    }
+    this.templates = {        
+        getTemplate: function(templateName, obj) {
+            console.log('this', this)
+            return this[templateName](obj);
+        },
+        planListItem: function(obj){
+            console.log('Generate plan list item template', obj)
+            return $('' +
+                `<div class="list-item row" data-id="${obj.id}">` +
+                    `<div class="col s10">${obj.name}</div>` +
+                    '<div class="col s2">' +
+                        `<a class="clear-hotel" data-value="${obj.id}">` +
+                        '<i class="material-icons">clear</i>' +
+                        '</a>' +
+                    '</div>' +
+                '</div>');
+        }
+
+    }    
+}
+
+/*
+ This function initialize all events and assign them to DOM element
+ */
+trippin.prototype.init = function() {    
+    let _this = this,
+        element = this.elem,
+        events = this.events,
+        PlanTypes = this.planTypes;
+
+    
+    $(document).ready(function() {
+        
+        PlanTypes.forEach(function(planType) {
+            /*
+                add plan event
+             */
+            let $addPlanButton = element.addPlanButton(planType);
+            if (planType === 'hotel') $addPlanButton.on('click', () => (_this.addPlan(planType, { allowMultiple: false })))
+            else $addPlanButton.on('click', () => (_this.addPlan(planType, { allowMultiple: true })))
+
+            /*
+                remove plan button event
+             */
+            let $removePlanButton = element.removePlanButton(planType);
+            element.removePlanButton(planType).on('click', function() {
+                console.log('this', this)
+                _this.removePlan(planType, this)
+            })
+        })
     });
+};
+
+
+trippin.prototype.getTemplate = function(templateName, obj) {
+    return this.templates[templateName](obj);
+}
+trippin.prototype.addPlan = function(planType, options) {
+    
+    /* 
+        This function takes following tow arguments
+  
+        1. placeType[String]
+  
+        takes string as first argument and use the string
+        when selecting DOM element(s) with jQuery.
+
+        2. options[Object]
+
+        takes object as second argument. we can create many options
+        and set it to trigger certain behavior.
+  
+        -- option list --
+  
+
+        options: {
+          allowMultiple: Boolean
+          ## This option allows to add multiple plans 
+        }
+    */
+    console.log(`add ${planType}button is clicked.`);
+
+    let _this = this,
+        activeTab = this.elem.getActiveTabValue(),
+        $listItems = this.elem.dayPlanListItems(activeTab, planType),
+        dataId = this.elem.selectList(planType).val(),
+
+        isDuplicate = function() {
+            // console.log('Is Duplicate?', $listItems)
+            let result = false;
+        
+            $listItems.each(function(){
+                //console.log('id', parseInt(dataId))
+                //console.log('data-id', parseInt($(this).data('id')))
+                if($(this).data('id') === parseInt(dataId)) result = true;
+            })
+            return result;
+        },
+
+        isEmpty = function(){
+            console.log('$listItems.length', $listItems.length)
+            if(options && options.allowMultiple) return true;
+            return !$listItems || $listItems.length === 0 ? true : false;
+        };
+        
+
+    $.when(isDuplicate())
+        .then((duplicate)=>{            
+            if(duplicate) throw new Error(`${planType} id(${dataId}) already exist.`);            
+            return isEmpty()
+        }).then((empty)=>{            
+            if(!empty) throw new Error(`${planType} already exist.`);
+            return empty
+        }).then(function(){
+            let data = { day: activeTab };
+            data[planType + 'Id'] = dataId;
+
+            $.ajax({
+                method: 'POST',
+                url: window.location.href + '/' + planType,
+                data: data
+            }).done(function(result) {
+                $(`#${planType}-plan>.plan-list`).append(_this.getTemplate('planListItem', result));
+                
+                /*
+                remove plan button event
+                 */                
+                console.log($(`#day${activeTab}>#${planType}-plan`).find('.list-item')) 
+                $(`#day${activeTab}>#${planType}-plan`).find('.list-item').last().addEventListener('click', function() {
+                    console.log('this', this)
+                    return _this.removePlan(planType, this);
+                });
+
+            });
+        },function(err){
+            console.log(err);
+            return false;
+        })
+};
+
+trippin.prototype.removePlan = function(planType, self){
+    console.log(`remove ${planType}button is clicked.`);    
+    $(self).closest('.list-item').empty();
 }
 
-function addRestaurant() {
-    console.log("Restaurant button is clicked");
+trippin.prototype.addDay = function(){
 
-    var day;
-    // $element = $('#restaurant-list');
-    //gave us the ID
-    var selectedVal = $('#restaurant-list').val();
-    //this gives us the name of the restaurant
-    //label option tag text
-  var label = $('#restaurant-list').find('option:selected').text()
-
-  $.when(
-      // here we are running through each DOM node with class '.day-tab'. Look at line 76 on /views/trip.html
-      $('.tab-link').each(function() {
-          if ($(this).hasClass('active')) {
-              day = $(this).data('value');
-          }
-      })
-
-  ).done(function() {
-      let $template = $(''+
-        '<div class="list-item row">' +
-          '<div class="col s10">'+label+'</div>'+
-          '<div class="col s2">'+
-            '<a class="clear-restaurant" data-value="'+selectedVal+'">'+
-              '<i class="material-icons">clear</i>'+
-            '</a>'+
-          '</div>'+
-        '</div>');
-      $('#day'+day+'>#restaurant-plan>.plan-list').append($template);
-    })
 }
 
-function addActivity() {
-    console.log("Activity button is clicked");
-    var day;
-    var selectedVal = $('activity-list').val();
-    var label = $('#activity-list').find('option:selected').text();
-    $.when(
-          $('.tab-link').each(function(){
-            if($(this).hasClass('active')){
-                day = $(this).data('value');
-            }
-          })
-    ).done(function(){
-        let $template = $(''+
-          '<div class="list-item row">' +
-            '<div class="col s10">'+label+'</div>'+
-            '<div class="col s2">'+
-              '<a class="clear-activity" data-value="'+selectedVal+'">'+
-                '<i class="material-icons">clear</i>'+
-              '</a>'+
-            '</div>'+
-          '</div>');
-        $('#day'+ day+'>#activities-plan >.plan-list').append($template);
-    })
+trippin.prototype.removeDay = function(){
+
 }
 
-$(document).ready(function() {
-    $('#hotel-btn').on('click', addHotel);
-    $('#restaurant-btn').on('click', addRestaurant);
-    $('#activity-btn').on('click', addActivity);
-});
+trippin.prototype.selectPlace = function(planType){
+
+}
+
+
+const Trippin = new trippin();
+Trippin.init();

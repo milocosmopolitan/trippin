@@ -83,8 +83,7 @@ router.get('/', (req, res, next) => {
             
         }
         //console.log(res.locals.trip.days)
-        //console.log(res.locals.plans)
-        console.log('hotels', res.locals.plans.day1.hotels[0].hotel)
+        //console.log(res.locals.plans)        
         res.render('trip');
     }).catch(next)
 })
@@ -109,10 +108,13 @@ router.post('/restaurant', (req, res, next) => {
         day: req.body.day,
         restaurantId: req.body.restaurantId,
         tripId: res.locals.trip.id
-    }).then((createdPlan) => {
-        console.log(createdPlan)
-        res.json(createdPlan);
     })
+    .then((createdPlan) => {
+        return Restaurant.findOne({
+            include: { model: Place },
+            where: { id: req.body.restaurantId }
+        })
+    }).then((restaurant) => { res.json(restaurant) })
 })
 
 router.post('/activity', (req, res, next) => {
@@ -120,8 +122,11 @@ router.post('/activity', (req, res, next) => {
         day: req.body.day,
         activityId: req.body.activityId,
         tripId: res.locals.trip.id
-    }).then((createdPlan) => {
-        console.log(createdPlan)
-        res.json(createdPlan);
     })
+    .then((createdPlan) => {
+        return Activity.findOne({
+            include: { model: Place },
+            where: { id: req.body.activityId }
+        })
+    }).then((activity) => { res.json(activity) })
 })
